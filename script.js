@@ -1,18 +1,18 @@
 // PARTICLES BACKGROUND
 particlesJS("particles-js", {
     particles: {
-        number: { value: 90, density: { enable: true, value_area: 800 } },
+        number: { value: 60, density: { enable: true, value_area: 800 } }, // Decreased base load to keep mobile scrolling buttery smooth
         color: { value: "#00eaff" },
         shape: { type: "circle" },
         opacity: { value: 0.5, random: true },
         size: { value: 3, random: true },
         line_linked: { enable: true, distance: 150, color: "#00eaff", opacity: 0.25, width: 1 },
-        move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
+        move: { enable: true, speed: 1.5, direction: "none", random: false, straight: false, out_mode: "out" }
     },
     interactivity: {
         detect_on: "canvas",
-        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
-        modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 4 } }
+        events: { onhover: { enable: false, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, // Disabled hover calculations on small mobile breakpoints to avoid tracking bugs
+        modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 3 } }
     },
     retina_detect: true
 });
