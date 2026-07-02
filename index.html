@@ -182,29 +182,49 @@
 
                     <!-- WEB3FORMS INJECTION LAYER -->
                     <form id="scoperForm">
-                        <input type="hidden" name="access_key" >
-                        
-                        <div class="form-group">
-                            <label>Representative / Founder Name</label>
-                            <input type="text" name="Client_Name" class="form-control" required placeholder="Ex: Sai Kiran">
-                        </div>
-                        <div class="form-group">
-                            <label>Business Access Email</label>
-                            <input type="email" name="Client_Email" class="form-control" required placeholder="skiran@enterprise.in">
-                        </div>
-                        <div class="form-group">
-                            <label>Primary Operational Domain</label>
-                            <select name="Operational_Domain" class="form-control" required>
-                                <option value="">Select Domain</option>
-                                <option value="Real_Estate">Real Estate Logistics</option>
-                                <option value="E_Commerce">Retail / E-Commerce Operations</option>
-                                <option value="EdTech">EdTech Systems</option>
-                                <option value="Enterprise">B2B Core Enterprise</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-submit">Request Architectural Proposal</button>
-                    </form>
-                </div>
+
+    <div class="form-group">
+        <label>Representative / Founder Name</label>
+        <input
+            type="text"
+            name="Client_Name"
+            class="form-control"
+            required
+            placeholder="Ex: Sai Kiran">
+    </div>
+
+    <div class="form-group">
+        <label>Business Access Email</label>
+        <input
+            type="email"
+            name="Client_Email"
+            class="form-control"
+            required
+            placeholder="skiran@enterprise.in">
+    </div>
+
+    <div class="form-group">
+        <label>Primary Operational Domain</label>
+        <select
+            name="Operational_Domain"
+            class="form-control"
+            required>
+            <option value="">Select Domain</option>
+            <option value="Real_Estate">Real Estate Logistics</option>
+            <option value="E_Commerce">Retail / E-Commerce Operations</option>
+            <option value="EdTech">EdTech Systems</option>
+            <option value="Enterprise">B2B Core Enterprise</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn-submit">
+        Request Architectural Proposal
+    </button>
+
+</form>
+                </div>                
+
+<div id="status"> </div>
 
                 <div class="success-wrapper" id="successCard">
                     <div class="success-icon">✓</div>
@@ -225,43 +245,42 @@
     </footer>
 
     <script src="script.js"></script>
-    <script>
+   <script>
 const form = document.getElementById("scoperForm");
 
-form.addEventListener("submit", async function(e) {
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const button = form.querySelector("button");
     button.disabled = true;
     button.innerText = "Submitting...";
 
-    const formData = new FormData(form);
-
-    const data = Object.fromEntries(formData.entries());
+    const data = Object.fromEntries(new FormData(form).entries());
 
     try {
-        const response = await fetch("https://n8n.srv1704252.hstgr.cloud/webhook/1ef56f0a-d474-407c-9931-20e3dac0f57e", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
+        const response = await fetch(
+            "https://n8n.srv1704252.hstgr.cloud/webhook/1ef56f0a-d474-407c-9931-20e3dac0f57e",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+        );
 
         if (response.ok) {
             document.getElementById("status").innerHTML =
-                "<p style='color:green;'>✅ Request Submitted Successfully!</p>";
-
+                "<span style='color:green;'>✅ Request submitted successfully!</span>";
             form.reset();
         } else {
             document.getElementById("status").innerHTML =
-                "<p style='color:red;'>❌ Submission Failed.</p>";
+                "<span style='color:red;'>❌ Submission failed.</span>";
         }
-    } catch (error) {
-        console.error(error);
-
+    } catch (err) {
+        console.error(err);
         document.getElementById("status").innerHTML =
-            "<p style='color:red;'>❌ Unable to connect to server.</p>";
+            "<span style='color:red;'>❌ Could not connect to the server.</span>";
     }
 
     button.disabled = false;
