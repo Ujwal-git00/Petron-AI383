@@ -196,48 +196,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- 4. ASYNCHRONOUS WEB3FORMS CONTROLLER ---
-    if (scoperForm) {
-        scoperForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
+// --- 4. N8N FORM SUBMISSION ---
+if (scoperForm) {
+    scoperForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-            const submitButton = scoperForm.querySelector(".btn-submit");
-            const originalButtonText = submitButton.textContent;
-            submitButton.textContent = "Compiling Parameters...";
-            submitButton.disabled = true;
+        const submitButton = scoperForm.querySelector(".btn-submit");
+        const originalButtonText = submitButton.textContent;
 
-            const formData = new FormData(scoperForm);
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
 
-            // Appends selected checkbox configurations dynamically into submission email payload
-            const functionalScope = Array.from(state.selectedComponents).join(", ");
-            formData.append("Selected_Infrastructure_Tracks", functionalScope);
+        const data = Object.fromEntries(new FormData(scoperForm).entries());
 
-            try {
-                const response = await fetch("https://n8n.srv1704252.hstgr.cloud/webhook/1ef56f0a-d474-407c-9931-20e3dac0f57e",
-                                             {
+        data.Selected_Infrastructure_Tracks = Array.from(state.selectedComponents).join(", ");
+
+        try {
+            const response = await fetch(
+                "https://n8n.srv1704252.hstgr.cloud/webhook/1ef56f0a-d474-407c-9931-20e3dac0f57e",
+                {
                     method: "POST",
-                     headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-                });
-if (response.ok) {
-    formContainerBlock.style.display = "none";
-    successCard.style.display = "flex";
-    scoperForm.reset();
-} else {
-    alert("Submission failed.");
-}
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
                 }
-            } catch (error) {
-                console.error("Network interface error status:", error);
-                alert("Pipeline exception detected. Please check your network or reach out over WhatsApp.");
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
+            );
+
+            if (response.ok) {
+                formContainerBlock.style.display = "none";
+                successCard.style.display = "flex";
+                scoperForm.reset();
+            } else {
+                alert("Submission failed.");
             }
-        });
-    }
+
+        } catch (error) {
+            console.error(error);
+            alert("Unable to connect to the server.");
+        }
+
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+    });
+}
 
     // Form Scoper Reset Engine
     if (resetFormBtn) {
