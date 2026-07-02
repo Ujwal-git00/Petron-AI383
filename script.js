@@ -212,19 +212,21 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("Selected_Infrastructure_Tracks", functionalScope);
 
             try {
-                const response = await fetch("https://api.web3forms.com/submit", {
+                const response = await fetch("https://n8n.srv1704252.hstgr.cloud/webhook/1ef56f0a-d474-407c-9931-20e3dac0f57e",
+                                             {
                     method: "POST",
-                    body: formData
+                     headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
                 });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    formContainerBlock.style.display = "none";
-                    successCard.style.display = "flex";
-                    scoperForm.reset();
-                } else {
-                    alert(`Submission routing anomaly: ${result.message}`);
+if (response.ok) {
+    formContainerBlock.style.display = "none";
+    successCard.style.display = "flex";
+    scoperForm.reset();
+} else {
+    alert("Submission failed.");
+}
                     submitButton.textContent = originalButtonText;
                     submitButton.disabled = false;
                 }
